@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class Bill {
     public Bill(String billId, User user, List<Item> items) {
         this.billId = billId;
         this.user = user;
-        this.items = Collections.unmodifiableList(items); // Ensure immutability of the list
+        this.items = Collections.unmodifiableList(items); //[ Ensure immutability of the list - to handle null if nul is passed as null]
     }
 
 }

@@ -3,6 +3,7 @@ import com.retailstore.model.Bill;
 import com.retailstore.model.Discount;
 import com.retailstore.service.DiscountService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-@Getter
-@Setter
 public class DiscountController {
 
-    private final DiscountService discountService;
+    private DiscountService discountService;
 
     public DiscountController(DiscountService discountService) {
         this.discountService = discountService;

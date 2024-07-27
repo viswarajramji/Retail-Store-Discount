@@ -1,142 +1,167 @@
 package com.retailstore.service;
-
+import com.retailstore.constants.DiscountConstants;
+import com.retailstore.enums.ItemType;
+import com.retailstore.enums.UserType;
 import com.retailstore.model.Bill;
 import com.retailstore.model.Discount;
 import com.retailstore.model.Item;
 import com.retailstore.model.User;
-import com.retailstore.enums.ItemType;
-import com.retailstore.enums.UserType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-//Todo:check failing test
-class DiscountServiceTest {
 
+public class DiscountServiceTest {
+
+    @InjectMocks
     private DiscountService discountService;
 
+    @Mock
+    private User mockUser;
+
+    @Mock
+    private Item mockItem1;
+
+    @Mock
+    private Item mockItem2;
+
     @BeforeEach
-    void setUp() {
-        discountService = new DiscountService();
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testCalculateNetPayableAmountWithEmployeeDiscount() {
-        // Create mocks
-        User user = mock(User.class);
-        when(user.getUserType()).thenReturn(UserType.EMPLOYEE);
-        when(user.getJoiningDate()).thenReturn(LocalDate.now());
+    public void testCalculateNetPayableAmountForEmployee() {
+        // Arrange
+        when(mockItem1.getTotalPrice()).thenReturn(150.0);
+        when(mockItem1.getType()).thenReturn(ItemType.NON_GROCERIES);
+        when(mockItem2.getTotalPrice()).thenReturn(50.0);
+        when(mockItem2.getType()).thenReturn(ItemType.GROCERIES);
+        when(mockUser.getUserType()).thenReturn(UserType.EMPLOYEE);
+        when(mockUser.getJoiningDate()).thenReturn(LocalDate.now().minusYears(3));
 
-        Item item1 = mock(Item.class);
-        when(item1.getTotalPrice()).thenReturn(4.0);
-        when(item1.getType()).thenReturn(ItemType.GROCERIES);
+        List<Item> items = Arrays.asList(mockItem1, mockItem2);
+        Bill bill = new Bill("bill1", mockUser, items);
 
-        Item item2 = mock(Item.class);
-        when(item2.getTotalPrice()).thenReturn(1200.0);
-        when(item2.getType()).thenReturn(ItemType.NON_GROCERIES);
+        double expectedTotalAmount = 200.0;
+        double expectedPercentageDiscount = 150.0 * DiscountConstants.EMPLOYEE_DISCOUNT;
+        double expectedBulkDiscount = Math.floor(expectedTotalAmount / 100) * DiscountConstants.PER_100_DISCOUNT;
+        double expectedDiscountedAmount = expectedTotalAmount - expectedPercentageDiscount - expectedBulkDiscount;
 
-        Bill bill = mock(Bill.class);
-        when(bill.getUser()).thenReturn(user);
-        when(bill.getItems()).thenReturn(Arrays.asList(item1, item2));
+        // Act
+        Discount result = discountService.calculateNetPayableAmount(bill);
 
-        // Calculate the discount
-        Discount discount = discountService.calculateNetPayableAmount(bill);
-
-        double expectedTotal = 1204.0;
-        double expectedDiscountedAmount = 1204.0 - (1200.0 * 0.30) - Math.floor(1204.0 / 100) * 5;
-
-        assertEquals(expectedTotal, discount.getTotalAmount());
-        assertEquals(expectedDiscountedAmount, discount.getDiscountedAmount());
+        // Assert
+        assertEquals(expectedTotalAmount, result.getTotalAmount(), "Total amount should be correct");
+        assertEquals(expectedDiscountedAmount, result.getDiscountedAmount(), "Discounted amount should be correct");
     }
 
     @Test
-    void testCalculateNetPayableAmountWithAffiliateDiscount() {
-        // Create mocks
-        User user = mock(User.class);
-        when(user.getUserType()).thenReturn(UserType.AFFILIATE);
-        when(user.getJoiningDate()).thenReturn(LocalDate.now());
+    public void testCalculateNetPayableAmountForAffiliate() {
+        // Arrange
+        when(mockItem1.getTotalPrice()).thenReturn(200.0);
+        when(mockItem1.getType()).thenReturn(ItemType.NON_GROCERIES);
+        when(mockItem2.getTotalPrice()).thenReturn(30.0);
+        when(mockItem2.getType()).thenReturn(ItemType.GROCERIES);
+        when(mockUser.getUserType()).thenReturn(UserType.AFFILIATE);
+        when(mockUser.getJoiningDate()).thenReturn(LocalDate.now().minusYears(1));
 
-        Item item1 = mock(Item.class);
-        when(item1.getTotalPrice()).thenReturn(3.0);
-        when(item1.getType()).thenReturn(ItemType.NON_GROCERIES);
+        List<Item> items = Arrays.asList(mockItem1, mockItem2);
+        Bill bill = new Bill("bill2", mockUser, items);
 
-        Item item2 = mock(Item.class);
-        when(item2.getTotalPrice()).thenReturn(250.0);
-        when(item2.getType()).thenReturn(ItemType.NON_GROCERIES);
+        double expectedTotalAmount = 230.0;
+        double expectedPercentageDiscount = 200.0 * DiscountConstants.AFFILIATE_DISCOUNT;
+        double expectedBulkDiscount = Math.floor(expectedTotalAmount / 100) * DiscountConstants.PER_100_DISCOUNT;
+        double expectedDiscountedAmount = expectedTotalAmount - expectedPercentageDiscount - expectedBulkDiscount;
 
-        Bill bill = mock(Bill.class);
-        when(bill.getUser()).thenReturn(user);
-        when(bill.getItems()).thenReturn(Arrays.asList(item1, item2));
+        // Act
+        Discount result = discountService.calculateNetPayableAmount(bill);
 
-        // Calculate the discount
-        Discount discount = discountService.calculateNetPayableAmount(bill);
-
-        double expectedTotal = 253.0;
-        double expectedDiscountedAmount = 253.0 - (253.0 * 0.10) -  Math.floor(253.0 / 100) * 5;
-
-        assertEquals(expectedTotal, discount.getTotalAmount());
-        assertEquals(expectedDiscountedAmount, discount.getDiscountedAmount());
+        // Assert
+        assertEquals(expectedTotalAmount, result.getTotalAmount(), "Total amount should be correct");
+        assertEquals(expectedDiscountedAmount, result.getDiscountedAmount(), "Discounted amount should be correct");
     }
 
     @Test
-    void testCalculateNetPayableAmountWithLoyaltyDiscount() {
-        // Create mocks
-        User user = mock(User.class);
-        when(user.getUserType()).thenReturn(UserType.CUSTOMER);
-        when(user.getJoiningDate()).thenReturn(LocalDate.of(2018, 1, 1));
+    public void testCalculateNetPayableAmountForLongTermCustomer() {
+        // Arrange
+        when(mockItem1.getTotalPrice()).thenReturn(80.0);
+        when(mockItem1.getType()).thenReturn(ItemType.NON_GROCERIES);
+        when(mockItem2.getTotalPrice()).thenReturn(20.0);
+        when(mockItem2.getType()).thenReturn(ItemType.GROCERIES);
+        when(mockUser.getUserType()).thenReturn(UserType.CUSTOMER);
+        when(mockUser.getJoiningDate()).thenReturn(LocalDate.now().minusYears(3));
 
-        Item item1 = mock(Item.class);
-        when(item1.getTotalPrice()).thenReturn(6.0);
-        when(item1.getType()).thenReturn(ItemType.NON_GROCERIES);
+        List<Item> items = Arrays.asList(mockItem1, mockItem2);
+        Bill bill = new Bill("bill3", mockUser, items);
 
-        Item item2 = mock(Item.class);
-        when(item2.getTotalPrice()).thenReturn(150.0);
-        when(item2.getType()).thenReturn(ItemType.NON_GROCERIES);
+        double expectedTotalAmount = 100.0;
+        double expectedPercentageDiscount = 80.0 * DiscountConstants.LOYALTY_DISCOUNT;
+        double expectedBulkDiscount = Math.floor(expectedTotalAmount / 100) * DiscountConstants.PER_100_DISCOUNT;
+        double expectedDiscountedAmount = expectedTotalAmount - expectedPercentageDiscount - expectedBulkDiscount;
 
-        Bill bill = mock(Bill.class);
-        when(bill.getUser()).thenReturn(user);
-        when(bill.getItems()).thenReturn(Arrays.asList(item1, item2));
+        // Act
+        Discount result = discountService.calculateNetPayableAmount(bill);
 
-        // Calculate the discount
-        Discount discount = discountService.calculateNetPayableAmount(bill);
-
-        double expectedTotal = 156.0;
-        double expectedDiscountedAmount = 156.0 - (156 * 0.05) -  Math.floor(156.0 / 100) * 5;
-
-        assertEquals(expectedTotal, discount.getTotalAmount());
-        assertEquals(expectedDiscountedAmount, discount.getDiscountedAmount());
+        // Assert
+        assertEquals(expectedTotalAmount, result.getTotalAmount(), "Total amount should be correct");
+        assertEquals(expectedDiscountedAmount, result.getDiscountedAmount(), "Discounted amount should be correct");
     }
 
-//    @Test
-//    void testCalculateNetPayableAmountWithNoDiscount() {
-//        // Create mocks
-//        User user = mock(User.class);
-//        when(user.getUserType()).thenReturn(UserType.CUSTOMER);
-//        when(user.getJoiningDate()).thenReturn(LocalDate.of(2021, 1, 1));
-//
-//        Item item1 = mock(Item.class);
-//        when(item1.getTotalPrice()).thenReturn(2.0);
-//        when(item1.getType()).thenReturn(ItemType.NON_GROCERIES);
-//
-//        Item item2 = mock(Item.class);
-//        when(item2.getTotalPrice()).thenReturn(5.0);
-//        when(item2.getType()).thenReturn(ItemType.NON_GROCERIES);
-//
-//        Bill bill = mock(Bill.class);
-//        when(bill.getUser()).thenReturn(user);
-//        when(bill.getItems()).thenReturn(Arrays.asList(item1, item2));
-//
-//        // Calculate the discount
-//        Discount discount = discountService.calculateNetPayableAmount(bill);
-//
-//        double expectedTotal = 7;
-//        double expectedDiscountedAmount = (7 -  (14.0 / 100) * 5); // Only bulk discount applies
-//
-//        assertEquals(expectedTotal, discount.getTotalAmount());
-//        assertEquals(expectedDiscountedAmount, discount.getDiscountedAmount());
-//    }
+    @Test
+    public void testCalculateNetPayableAmountForNewCustomer() {
+        // Arrange
+        when(mockItem1.getTotalPrice()).thenReturn(150.0);
+        when(mockItem1.getType()).thenReturn(ItemType.NON_GROCERIES);
+        when(mockItem2.getTotalPrice()).thenReturn(50.0);
+        when(mockItem2.getType()).thenReturn(ItemType.GROCERIES);
+        when(mockUser.getUserType()).thenReturn(UserType.CUSTOMER);
+        when(mockUser.getJoiningDate()).thenReturn(LocalDate.now());
+
+        List<Item> items = Arrays.asList(mockItem1, mockItem2);
+        Bill bill = new Bill("bill4", mockUser, items);
+
+        double expectedTotalAmount = 200.0;
+        double expectedPercentageDiscount = 150.0 * DiscountConstants.LOYALTY_DISCOUNT;
+        double expectedBulkDiscount = Math.floor(expectedTotalAmount / 100) * DiscountConstants.PER_100_DISCOUNT;
+        double expectedDiscountedAmount = expectedTotalAmount - expectedPercentageDiscount - expectedBulkDiscount;
+
+        // Act
+        Discount result = discountService.calculateNetPayableAmount(bill);
+
+        // Assert
+        assertEquals(expectedTotalAmount, result.getTotalAmount(), "Total amount should be correct");
+        assertEquals(190.0, result.getDiscountedAmount(), "Discounted amount should be correct");
+    }
+
+    @Test
+    public void testCalculateNetPayableAmountWithNoItems() {
+        // Arrange
+        when(mockUser.getUserType()).thenReturn(UserType.CUSTOMER);
+        when(mockUser.getJoiningDate()).thenReturn(LocalDate.now());
+
+        List<Item> items = Collections.emptyList();
+        Bill bill = new Bill("bill5", mockUser, items);
+
+        double expectedTotalAmount = 0.0;
+        double expectedPercentageDiscount = 0.0;
+        double expectedBulkDiscount = 0.0;
+        double expectedDiscountedAmount = 0.0;
+
+        // Act
+        Discount result = discountService.calculateNetPayableAmount(bill);
+
+        // Assert
+        assertEquals(expectedTotalAmount, result.getTotalAmount(), "Total amount should be 0.0");
+        assertEquals(expectedDiscountedAmount, result.getDiscountedAmount(), "Discounted amount should be 0.0");
+    }
 }
