@@ -39,23 +39,11 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
-		<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-actuator</artifactId>-->
-<!--		</dependency>-->
-		<!-- to be removed-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-devtools</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--			<optional>true</optional>-->
-<!--		</dependency>-->
-
-
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.24</version> <!-- Use the latest version -->
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -91,12 +79,6 @@
 			<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>9.4</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -120,7 +102,6 @@
 				<configuration>
 					<excludes>
 						<exclude>**/constants/**</exclude>
-						<exclude>**/model/**</exclude>
 						<exclude>**/RetailStoreDiscountCalculatorApplication.class</exclude>
 					</excludes>
 				</configuration>
@@ -136,7 +117,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.1.2</version>
+				<version>3.4.0</version>
 				<executions>
 					<execution>
 						<phase>validate</phase>
@@ -147,44 +128,10 @@
 				</executions>
 				<configuration>
 					<configLocation>src/main/resources/checkstyle.xml</configLocation>
-					<encoding>UTF-8</encoding>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>
 				</configuration>
 			</plugin>
-
-
-<!--			<plugin>-->
-<!--				<groupId>org.apache.maven.plugins</groupId>-->
-<!--				<artifactId>maven-pmd-plugin</artifactId>-->
-<!--				<version>3.14.0</version>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<phase>validate</phase>-->
-<!--						<goals>-->
-<!--							<goal>pmd</goal>-->
-<!--							<goal>cpd</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--				<configuration>-->
-<!--					<rulesets>-->
-<!--						<ruleset>src/main/resources/pmd.xml</ruleset>-->
-<!--					</rulesets>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
-<!--			<plugin>-->
-<!--				<groupId>org.apache.maven.plugins</groupId>-->
-<!--				<artifactId>maven-pmd-plugin</artifactId>-->
-<!--				<version>${pmd.version}</version>-->
-<!--				<configuration>-->
-<!--					<rulesets>-->
-<!--						<ruleset>java-basic</ruleset>-->
-<!--						<ruleset>java-design</ruleset>-->
-<!--						<ruleset>java-unusedcode</ruleset>-->
-<!--					</rulesets>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
 
 			<!-- SpotBugs Plugin -->
 			<plugin>
@@ -203,6 +150,11 @@
 					<effort>Max</effort>
 					<threshold>Low</threshold>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.9.1.2184</version>
 			</plugin>
 
 		</plugins>
