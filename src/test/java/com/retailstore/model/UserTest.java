@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserTest {
+class UserTest {
 
     private final Validator validator;
 

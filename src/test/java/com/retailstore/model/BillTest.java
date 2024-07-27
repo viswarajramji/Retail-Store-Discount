@@ -3,7 +3,6 @@ package com.retailstore.model;
 import com.retailstore.enums.ItemType;
 import com.retailstore.enums.UserType;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
@@ -16,18 +15,18 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BillTest {
+class BillTest {
 
     private Validator validator;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
 
     @Test
-    public void testBillCreationWithValidData() {
+    void testBillCreationWithValidData() {
         // Arrange
         User user = new User("user1", "User Name", UserType.CUSTOMER, LocalDate.now().minusYears(1));
         Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, 100.0);
@@ -45,7 +44,7 @@ public class BillTest {
     }
 
     @Test
-    public void testBillCreationWithBlankBillId() {
+     void testBillCreationWithBlankBillId() {
         // Arrange
         User user = new User("user1", "User Name", UserType.CUSTOMER, LocalDate.now().minusYears(1));
         Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, 100.0);
@@ -61,7 +60,7 @@ public class BillTest {
     }
 
     @Test
-    public void testBillCreationWithNullUser() {
+     void testBillCreationWithNullUser() {
         // Arrange
         Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, 100.0);
 
@@ -76,7 +75,7 @@ public class BillTest {
 
 
     @Test
-    public void testBillCreationWithEmptyItems() {
+     void testBillCreationWithEmptyItems() {
         // Arrange
         User user = new User("user1", "User Name", UserType.CUSTOMER, LocalDate.now().minusYears(1));
 

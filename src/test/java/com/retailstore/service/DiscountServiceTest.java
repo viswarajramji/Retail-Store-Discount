@@ -35,12 +35,12 @@ public class DiscountServiceTest {
     private Item mockItem2;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testCalculateNetPayableAmountForEmployee() {
+    void testCalculateNetPayableAmountForEmployee() {
         // Arrange
         when(mockItem1.getTotalPrice()).thenReturn(150.0);
         when(mockItem1.getType()).thenReturn(ItemType.NON_GROCERIES);
@@ -66,7 +66,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmountForAffiliate() {
+     void testCalculateNetPayableAmountForAffiliate() {
         // Arrange
         when(mockItem1.getTotalPrice()).thenReturn(200.0);
         when(mockItem1.getType()).thenReturn(ItemType.NON_GROCERIES);
@@ -92,7 +92,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmountForLongTermCustomer() {
+     void testCalculateNetPayableAmountForLongTermCustomer() {
         // Arrange
         when(mockItem1.getTotalPrice()).thenReturn(80.0);
         when(mockItem1.getType()).thenReturn(ItemType.NON_GROCERIES);
@@ -117,8 +117,9 @@ public class DiscountServiceTest {
         assertEquals(expectedDiscountedAmount, result.getDiscountedAmount(), "Discounted amount should be correct");
     }
 
+
     @Test
-    public void testCalculateNetPayableAmountForNewCustomer() {
+     void testCalculateNetPayableAmountForNewCustomer() {
         // Arrange
         when(mockItem1.getTotalPrice()).thenReturn(150.0);
         when(mockItem1.getType()).thenReturn(ItemType.NON_GROCERIES);
@@ -131,10 +132,6 @@ public class DiscountServiceTest {
         Bill bill = new Bill("bill4", mockUser, items);
 
         double expectedTotalAmount = 200.0;
-        double expectedPercentageDiscount = 150.0 * DiscountConstants.LOYALTY_DISCOUNT;
-        double expectedBulkDiscount = Math.floor(expectedTotalAmount / 100) * DiscountConstants.PER_100_DISCOUNT;
-        double expectedDiscountedAmount = expectedTotalAmount - expectedPercentageDiscount - expectedBulkDiscount;
-
         // Act
         Discount result = discountService.calculateNetPayableAmount(bill);
 
@@ -144,7 +141,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmountWithNoItems() {
+     void testCalculateNetPayableAmountWithNoItems() {
         // Arrange
         when(mockUser.getUserType()).thenReturn(UserType.CUSTOMER);
         when(mockUser.getJoiningDate()).thenReturn(LocalDate.now());
@@ -153,8 +150,6 @@ public class DiscountServiceTest {
         Bill bill = new Bill("bill5", mockUser, items);
 
         double expectedTotalAmount = 0.0;
-        double expectedPercentageDiscount = 0.0;
-        double expectedBulkDiscount = 0.0;
         double expectedDiscountedAmount = 0.0;
 
         // Act
