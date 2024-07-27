@@ -1,4 +1,4 @@
-package com.retailstore.data;
+package com.retailstore.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class Discount {
-    private double totalAmount;
-    private double discountedAmount;
+    private final  double totalAmount;
+    private final double discountedAmount;
 }

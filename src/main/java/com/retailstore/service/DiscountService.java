@@ -1,10 +1,10 @@
 package com.retailstore.service;
 
 import com.retailstore.constants.DiscountConstants;
-import com.retailstore.data.Bill;
-import com.retailstore.data.Discount;
-import com.retailstore.data.Item;
-import com.retailstore.data.User;
+import com.retailstore.model.Bill;
+import com.retailstore.model.Discount;
+import com.retailstore.model.Item;
+import com.retailstore.model.User;
 import com.retailstore.enums.ItemType;
 import com.retailstore.enums.UserType;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class DiscountService {
                 .sum();
     }
 
-    private double calculatePercentageDiscount(User user,List<Item> items) {
+    private double calculatePercentageDiscount(User user , List<Item> items) {
         double totalNonGroceryAmount = calculateTotalNonGroceryAmount(items);
         double discountRate = determineMaxPercentageDiscount(user);
         return totalNonGroceryAmount * discountRate;
@@ -52,9 +52,12 @@ public class DiscountService {
             return DiscountConstants.EMPLOYEE_DISCOUNT; // 30%
         } else if (UserType.AFFILIATE.equals(user.getUserType())) {
             return DiscountConstants.AFFILIATE_DISCOUNT; // 10%
-        } else if (ChronoUnit.YEARS.between(user.getJoiningDate(), LocalDate.now()) > 2) {
+        } else if (isLongTermCustomer(user)) {
             return DiscountConstants.LOYALTY_DISCOUNT; // 5%
         }
         return 0;
+    }
+    private boolean isLongTermCustomer(User user) {
+        return ChronoUnit.YEARS.between(user.getJoiningDate(), LocalDate.now()) > 2;
     }
 }
