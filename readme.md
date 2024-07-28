@@ -217,3 +217,11 @@ echo "SonarQube analysis successful."
 * CodeCoverage
 
 ![img.png](docs/CodeCoverage.png)
+
+* CheckStyle Error(if occured)
+
+![img.png](docs/CheckStyle.png)
+
+* SpotBugs Error(if occured)
+
+![img.png](docs/SpotBugs.png)
