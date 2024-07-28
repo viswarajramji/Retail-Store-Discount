@@ -3,6 +3,7 @@ package com.retailstore.model;
 import com.retailstore.enums.UserType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalDate;
@@ -20,7 +21,8 @@ public class User {
     @NotNull(message = "UserType Cannot be Blank")
     private final UserType userType;
 
-    @NotNull(message = "JoiningDate Cannot be Blank")
+    @PastOrPresent(message = "The date must be in the past or present")
+    @NotNull(message = "JoiningDate cannot be Blank")
     private final LocalDate joiningDate;
 
 }

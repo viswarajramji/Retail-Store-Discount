@@ -27,7 +27,7 @@ public class Bill {
     public Bill(String billId, User user, List<Item> items) {
         this.billId = billId;
         this.user = user;
-        this.items = Collections.unmodifiableList(items); //[ Ensure immutability of the list - to handle null if nul is passed as null]
+        this.items = Collections.unmodifiableList(items != null ? items : Collections.emptyList());
 
     }
 
