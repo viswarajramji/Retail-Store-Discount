@@ -104,11 +104,14 @@ Once the status shows as up, proceed to the next step.
 
 The application is integrated with Swagger, making the REST API endpoints and schema available at:
 
+
+
+
 ```sh
 http://localhost:8080/swagger-ui/index.html
 ```
 
-Use the sample payload below (details about the attributes are provided in this section):
+Use the sample payload below
 
 ```sh
 {
@@ -189,17 +192,23 @@ mvn clean verify sonar:sonar -Dsonar.token=<token>
 
 ### To Include SonarQube Deployment in build_and_test.sh (optional)
 
-In the build_and_test.sh After code coverage include the following snippet
+In the build_and_test.sh After code coverage uncomment the following snippet, with the generated token value.
 
 ```sh
 echo "Starting SonarQube analysis..."
-execute_step mvn clean verify sonar:sonar -Dsonar.token=sqp_291df72412f2745d777c3fad0df590a30dce068b
+execute_step mvn clean verify sonar:sonar -Dsonar.token=<token>
 echo "SonarQube analysis successful."
 ```
+### Screen Shots for reference:
 
-### Assumptions
+* Swagger UI:
 
-The Bill object has an aggregation to User and List of Items
-The Bill object has the following structure
+![img.png](docs/swagger.png)
 
-### UML Diagram and Class Diagram
+* SonarQube
+
+![img.png](docs/sonarQube.png)
+
+
+*CodeCoverage
+![img.png](docs/CodeCoverage.png)
