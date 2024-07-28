@@ -142,7 +142,6 @@ Sample Output
     - item001 - totalPrice: 400 - NON_GROCERY
     - item002 - totalPrice: 100 - GROCERY
     - User - EMPLOYEE - Joining date (2024-07-27)
-    
     - Step by Step Calculation:
         -   Total Price(totalAmount): 400 + 100 = 500
         -   Total Price Non-Grocery Items: 400
