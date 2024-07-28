@@ -253,4 +253,5 @@ public class DiscountServiceTest {
         assertEquals("199.99", discount.getTotalAmount());
         assertEquals("194.99", discount.getDiscountedAmount());
     }
+
 }
