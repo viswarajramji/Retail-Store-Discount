@@ -64,12 +64,12 @@ git clone https://github.com/yourusername/retail-store-discount.git
 cd retail-store-discount
 ```
 
-###Give the build_and_test.sh Executable Permissions
+### Give the build_and_test.sh Executable Permissions
 
 ```sh
 sudo chmod +x build_and_test.sh
 ```
-###Run the Build and Test Script
+### Run the Build and Test Script
 
 ```sh
 ./build_and_test.sh
@@ -82,7 +82,7 @@ This script will:
 * Run tests and publish the results to JaCoCo. 
 * Starts the application.
 
-###Check Application Health for Successful Startup
+### Check Application Health for Successful Startup
 
 ```sh
 http://localhost:8080/actuator/health
@@ -90,7 +90,7 @@ http://localhost:8080/actuator/health
 
 Once the status shows as up, proceed to the next step.
 
-###Accessing the REST Application
+### Accessing the REST Application
 
 The application is integrated with Swagger, making the REST API endpoints and schema available at:
 
@@ -151,7 +151,7 @@ Sample Output
         -   Default Discount: $5 for each $100 purchase on bill amount = (500 / 100) * 5 = 25
         -   Net Payable Amount(discountedAmount): Total Price - Employee Discount - Default Discount = 500 - 120 - 25 = 355
 
-###JaCoCo Test Report for Unit Tests Locally
+### JaCoCo Test Report for Unit Tests Locally
 Once the build_and_test.sh script is executed and the application is started:
 
 ```sh
@@ -159,7 +159,7 @@ Once the build_and_test.sh script is executed and the application is started:
 -   Open index.html in a web browser to view the unit test code report.
 ````
 
-##Running SonarQube locally with Docker
+## Running SonarQube locally with Docker
 
 Run SonarQube Container
 
@@ -188,9 +188,9 @@ execute_step mvn clean verify sonar:sonar -Dsonar.token=sqp_291df72412f2745d777c
 echo "SonarQube analysis successful."
 ```
 
-###Assumptions
+### Assumptions
 
 The Bill object has an aggregation to User and List of Items
 The Bill object has the following structure
 
-###UML Diagram and Class Diagram
+### UML Diagram and Class Diagram
