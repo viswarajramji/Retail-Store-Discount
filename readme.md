@@ -1,6 +1,6 @@
 # Retail Store Discount Application
 
-* Note: Developed in MacOS.
+* Note: this project was developed in MacOS.
 
 ## Overview
 
