@@ -201,14 +201,18 @@ echo "SonarQube analysis successful."
 ```
 ### Screen Shots for reference:
 
-* Swagger UI:
+* Swagger UI Request:
 
-![img.png](docs/swagger.png)
+![img.png](docs/Swagger.png)
+
+* Swagger UI Response:
+
+![img.png](docs/SwaggerResponse.png)
 
 * SonarQube
 
-![img.png](docs/sonarQube.png)
+![img.png](docs/SonarQube.png)
 
+* CodeCoverage
 
-*CodeCoverage
 ![img.png](docs/CodeCoverage.png)
