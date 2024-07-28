@@ -8,7 +8,6 @@ import com.retailstore.model.User;
 import com.retailstore.enums.ItemType;
 import com.retailstore.enums.UserType;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
