@@ -9,6 +9,8 @@ import com.retailstore.enums.ItemType;
 import com.retailstore.enums.UserType;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -17,46 +19,50 @@ import java.util.List;
 public class DiscountService {
 
     public Discount calculateNetPayableAmount(Bill bill) {
-        double totalAmount = calculateTotalAmount(bill.getItems());
-        double percentageDiscount = calculatePercentageDiscount(bill.getUser(), bill.getItems());
-        double bulkDiscount = calculateBulkDiscount(totalAmount);
-        double discountedAmount = totalAmount - percentageDiscount - bulkDiscount;
-        return new Discount(totalAmount, discountedAmount);
+        BigDecimal totalAmount = calculateTotalAmount(bill.getItems());
+        BigDecimal percentageDiscount = calculatePercentageDiscount(bill.getUser(), bill.getItems());
+        BigDecimal bulkDiscount = calculateBulkDiscount(totalAmount);
+        BigDecimal discountedAmount = totalAmount.subtract(percentageDiscount).subtract(bulkDiscount).setScale(2, RoundingMode.HALF_UP);
+        return new Discount(totalAmount.toPlainString(), discountedAmount.toPlainString());
     }
 
-    private double calculateTotalAmount(List<Item> items) {
+    public BigDecimal calculateTotalAmount(List<Item> items) {
         return items.stream()
-                .mapToDouble(Item::getTotalPrice)
-                .sum();
+                .map(Item::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
-    private double calculateTotalNonGroceryAmount(List<Item> items) {
+    private BigDecimal calculatePercentageDiscount(User user , List<Item> items) {
+        BigDecimal totalNonGroceryAmount = calculateTotalNonGroceryAmount(items);
+        BigDecimal maxPercentageDiscount = determineMaxPercentageDiscount(user);
+        return totalNonGroceryAmount.multiply(maxPercentageDiscount).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal calculateTotalNonGroceryAmount(List<Item> items) {
         return items.stream()
-                .filter(item -> !ItemType.GROCERIES.equals(item.getType()))
-                .mapToDouble(Item::getTotalPrice)
-                .sum();
+                .filter(item ->  !ItemType.GROCERIES.equals(item.getType()))
+                .map(Item::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
-    private double calculatePercentageDiscount(User user , List<Item> items) {
-        double totalNonGroceryAmount = calculateTotalNonGroceryAmount(items);
-        double discountRate = determineMaxPercentageDiscount(user);
-        return totalNonGroceryAmount * discountRate;
+    public BigDecimal calculateBulkDiscount(BigDecimal totalAmount) {
+        BigDecimal bulkDiscountCount = totalAmount.divide(BigDecimal.valueOf(100.00), RoundingMode.FLOOR);
+        return bulkDiscountCount.multiply(BigDecimal.valueOf(DiscountConstants.PER_100_DISCOUNT)).setScale(2, RoundingMode.HALF_UP);
     }
 
-    private double calculateBulkDiscount(double totalAmount) {
-        return Math.floor(totalAmount / 100) * DiscountConstants.PER_100_DISCOUNT;
-    }
-
-    private double determineMaxPercentageDiscount(User user) {
+    private BigDecimal determineMaxPercentageDiscount(User user) {
         if (UserType.EMPLOYEE.equals(user.getUserType())) {
-            return DiscountConstants.EMPLOYEE_DISCOUNT; // 30%
+            return BigDecimal.valueOf(DiscountConstants.EMPLOYEE_DISCOUNT); // 30%
         } else if (UserType.AFFILIATE.equals(user.getUserType())) {
-            return DiscountConstants.AFFILIATE_DISCOUNT; // 10%
+            return BigDecimal.valueOf(DiscountConstants.AFFILIATE_DISCOUNT); // 10%
         } else if (isLongTermCustomer(user)) {
-            return DiscountConstants.LOYALTY_DISCOUNT; // 5%
+            return BigDecimal.valueOf(DiscountConstants.LOYALTY_DISCOUNT); // 5%
         }
-        return 0;
+        return BigDecimal.ZERO;
     }
+
     private boolean isLongTermCustomer(User user) {
         return ChronoUnit.YEARS.between(user.getJoiningDate(), LocalDate.now()) > 2;
     }

@@ -9,6 +9,7 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
@@ -29,7 +30,7 @@ class BillTest {
     void testBillCreationWithValidData() {
         // Arrange
         User user = new User("user1", "User Name", UserType.CUSTOMER, LocalDate.now().minusYears(1));
-        Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, 100.0);
+        Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, BigDecimal.valueOf(100.0));
         Bill bill = new Bill("bill1", user, Collections.singletonList(item));
 
         // Act
@@ -47,7 +48,7 @@ class BillTest {
      void testBillCreationWithBlankBillId() {
         // Arrange
         User user = new User("user1", "User Name", UserType.CUSTOMER, LocalDate.now().minusYears(1));
-        Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, 100.0);
+        Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, BigDecimal.valueOf(100.0));
 
         // Act
         Bill bill = new Bill("", user, Collections.singletonList(item));
@@ -62,7 +63,7 @@ class BillTest {
     @Test
      void testBillCreationWithNullUser() {
         // Arrange
-        Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, 100.0);
+        Item item = new Item("item1", "Item Name", 1, ItemType.NON_GROCERIES, BigDecimal.valueOf(100.0));
 
         // Act
         Bill bill = new Bill("bill1", null, Collections.singletonList(item));

@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Getter
 @AllArgsConstructor
 public class Item {
@@ -24,5 +26,5 @@ public class Item {
     private final ItemType type;
 
     @Positive(message = "Price should be positive")
-    private final double totalPrice;
+    private final BigDecimal totalPrice;
 }

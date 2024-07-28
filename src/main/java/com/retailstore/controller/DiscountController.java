@@ -21,11 +21,6 @@ public class DiscountController {
         this.discountService = discountService;
     }
 
-    @GetMapping("/test")
-    public String getInfo() {
-        return "application running";
-    }
-
     @PostMapping("/calculate")
     public ResponseEntity<Discount> calculateNetPayableAmount(@Valid @RequestBody Bill bill) {
         Discount discountResponse = discountService.calculateNetPayableAmount(bill);

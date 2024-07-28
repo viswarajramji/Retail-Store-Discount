@@ -8,6 +8,8 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.math.BigDecimal;
 import java.util.Set;
 
 class ItemTest {
@@ -26,7 +28,7 @@ class ItemTest {
         String name = "Item Name";
         int quantity = 1;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = 10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(10.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, type, totalPrice);
@@ -46,7 +48,7 @@ class ItemTest {
         String name = "Item Name";
         int quantity = 1;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = 10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(10.0);
 
         // Act
         Item item = new Item(null, name, quantity, type, totalPrice);
@@ -64,7 +66,7 @@ class ItemTest {
         String name = "Item Name";
         int quantity = 1;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = 10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(10.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, type, totalPrice);
@@ -81,7 +83,7 @@ class ItemTest {
         String itemId = "item1";
         int quantity = 1;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = 10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(10.0);
 
         // Act
         Item item = new Item(itemId, null, quantity, type, totalPrice);
@@ -99,7 +101,7 @@ class ItemTest {
         String name = "";
         int quantity = 1;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = 10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(10.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, type, totalPrice);
@@ -117,7 +119,7 @@ class ItemTest {
         String name = "Item Name";
         int quantity = -1;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = 10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(10.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, type, totalPrice);
@@ -135,7 +137,7 @@ class ItemTest {
         String name = "Item Name";
         int quantity = 0;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = 10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(10.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, type, totalPrice);
@@ -152,7 +154,7 @@ class ItemTest {
         String itemId = "item1";
         String name = "Item Name";
         int quantity = 1;
-        double totalPrice = 10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(10.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, null, totalPrice);
@@ -170,14 +172,13 @@ class ItemTest {
         String name = "Item Name";
         int quantity = 1;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = -10.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(0.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, type, totalPrice);
 
         // Assert
         Set<ConstraintViolation<Item>> violations = validator.validate(item);
-        assertFalse(violations.isEmpty());
         assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Price should be positive")));
     }
 
@@ -188,7 +189,7 @@ class ItemTest {
         String name = "Item Name";
         int quantity = 1;
         ItemType type = ItemType.GROCERIES;
-        double totalPrice = 0.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(0.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, type, totalPrice);

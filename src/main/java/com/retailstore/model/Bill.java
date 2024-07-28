@@ -28,6 +28,7 @@ public class Bill {
         this.billId = billId;
         this.user = user;
         this.items = Collections.unmodifiableList(items); //[ Ensure immutability of the list - to handle null if nul is passed as null]
+
     }
 
 }

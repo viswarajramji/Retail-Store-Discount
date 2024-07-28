@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -37,12 +38,6 @@ class DiscountControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testGetInfo() {
-
-        String result = discountController.getInfo();
-        assertEquals("application running", result);
-    }
 
     @Test
     void testCalculateNetPayableAmount() {
@@ -52,11 +47,11 @@ class DiscountControllerTest {
         when(user.getJoiningDate()).thenReturn(LocalDate.now());
 
         Item item1 = mock(Item.class);
-        when(item1.getTotalPrice()).thenReturn(4.0);
+        when(item1.getTotalPrice()).thenReturn(BigDecimal.valueOf(4.0));
         when(item1.getType()).thenReturn(ItemType.GROCERIES);
 
         Item item2 = mock(Item.class);
-        when(item2.getTotalPrice()).thenReturn(1200.0);
+        when(item2.getTotalPrice()).thenReturn(BigDecimal.valueOf(1200.0));
         when(item2.getType()).thenReturn(ItemType.NON_GROCERIES);
 
         Bill bill = mock(Bill.class);
