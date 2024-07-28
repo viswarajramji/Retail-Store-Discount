@@ -6,7 +6,7 @@ import com.retailstore.model.Bill;
 import com.retailstore.model.Discount;
 import com.retailstore.model.Item;
 import com.retailstore.model.User;
-import com.retailstore.service.DiscountService;
+import com.retailstore.service.DiscountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 class DiscountControllerTest {
 
     @Mock
-    private DiscountService discountService;
+    private DiscountServiceImpl discountService;
 
     @InjectMocks
     private DiscountController discountController;

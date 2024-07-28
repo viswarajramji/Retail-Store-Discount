@@ -32,9 +32,9 @@ execute_step mvn jacoco:report
 echo "************************************** Testing and code coverage successful **************************************"
 
 # Step 5: Run SonarQube analysis
-#echo "************************************** Starting SonarQube analysis **************************************"
-#execute_step mvn clean verify sonar:sonar -Dsonar.token=sqp_291df72412f2745d777c3fad0df590a30dce068b
-#echo "************************************** SonarQube analysis successful **************************************"
+echo "************************************** Starting SonarQube analysis **************************************"
+execute_step mvn clean verify sonar:sonar -Dsonar.token=sqp_291df72412f2745d777c3fad0df590a30dce068b
+echo "************************************** SonarQube analysis successful **************************************"
 
 # Step 6: Start the Spring Boot application
 echo "************************************** Starting Spring Boot application **************************************"

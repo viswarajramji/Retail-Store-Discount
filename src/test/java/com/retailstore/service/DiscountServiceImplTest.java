@@ -13,13 +13,13 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-class DiscountServiceTest {
+class DiscountServiceImplTest {
 
-    private DiscountService discountService;
+    private DiscountServiceImpl discountService;
 
     @BeforeEach
      void setUp() {
-        discountService = new DiscountService();
+        discountService = new DiscountServiceImpl();
     }
 
     @Test
