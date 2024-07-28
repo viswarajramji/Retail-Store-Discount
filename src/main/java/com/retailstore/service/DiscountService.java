@@ -47,7 +47,7 @@ public class DiscountService {
     }
 
     public BigDecimal calculateBulkDiscount(BigDecimal totalAmount) {
-        BigDecimal bulkDiscountCount = totalAmount.divide(BigDecimal.valueOf(100.00), RoundingMode.FLOOR);
+        BigDecimal bulkDiscountCount = totalAmount.divide(BigDecimal.valueOf(100.00)).setScale(0,RoundingMode.DOWN);
         return bulkDiscountCount.multiply(BigDecimal.valueOf(DiscountConstants.PER_100_DISCOUNT)).setScale(2, RoundingMode.HALF_UP);
     }
 
