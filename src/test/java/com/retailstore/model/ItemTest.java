@@ -170,7 +170,7 @@ class ItemTest {
         String name = "Item Name";
         int quantity = 1;
         ItemType type = ItemType.GROCERIES;
-        BigDecimal totalPrice = BigDecimal.valueOf(0.0);
+        BigDecimal totalPrice = BigDecimal.valueOf(-10.0);
 
         // Act
         Item item = new Item(itemId, name, quantity, type, totalPrice);
