@@ -1,4 +1,4 @@
-# Retail Store Discount Application //TODO: ADD interface
+# Retail Store Discount Application
 
 ## Overview
 
