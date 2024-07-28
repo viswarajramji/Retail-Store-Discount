@@ -63,6 +63,6 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private boolean isLongTermCustomer(User user) {
-        return ChronoUnit.YEARS.between(user.getJoiningDate(), LocalDate.now()) > 2;
+        return ChronoUnit.YEARS.between(user.getJoiningDate(), LocalDate.now()) >= 2;
     }
 }
