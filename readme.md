@@ -1,5 +1,7 @@
 # Retail Store Discount Application
 
+* Note: Developed in MacOS.
+
 ## Overview
 
 This project is a backend service for calculating discounts on a retail store website. The application considers various discount criteria and computes the net payable amount for a given bill. The application is built using Java Spring Boot and follows an object-oriented programming approach with extensive unit test coverage.
@@ -70,13 +72,13 @@ git clone https://github.com/yourusername/retail-store-discount.git
 ```
 
 ```sh
-cd retail-store-discount
+cd Retail-Store-Discount
 ```
 
 ### Give the build_and_test.sh Executable Permissions
 
 ```sh
-sudo chmod +x build_and_test.sh
+chmod +x build_and_test.sh
 ```
 ### Run the Build and Test Script
 
