@@ -87,5 +87,19 @@ class BillTest {
         assertFalse(violations.isEmpty(), "There should be constraint violations for empty items list");
         assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Add at least one item")));
     }
+
+    @Test
+    void testBillCreationWithNullItems() {
+        // Arrange
+        User user = new User("user1", "User Name", UserType.CUSTOMER, LocalDate.now().minusYears(1));
+
+        // Act
+        Bill bill = new Bill("bill1", user, null);
+        Set<ConstraintViolation<Bill>> violations = validator.validate(bill);
+
+        // Assert
+        assertFalse(violations.isEmpty(), "There should be constraint violations for empty items list");
+        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Add at least one item")));
+    }
 }
 

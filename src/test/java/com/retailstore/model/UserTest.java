@@ -1,139 +1,101 @@
-//package com.retailstore.model;
-//
-//import com.retailstore.enums.UserType;
-//import jakarta.validation.ConstraintViolation;
-//import jakarta.validation.Validation;
-//import jakarta.validation.Validator;
-//import jakarta.validation.ValidatorFactory;
-//import org.junit.jupiter.api.Test;
-//import java.time.LocalDate;
-//import java.util.Set;
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//class UserTest {
-//
-//    private final Validator validator;
-//
-//    public UserTest() {
-//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-//        validator = factory.getValidator();
-//    }
-//
-//    @Test
-//    void testUserConstructorValidInput() {
-//        // Arrange
-//        String userId = "user1";
-//        String userName = "John Doe";
-//        UserType userType = UserType.EMPLOYEE;
-//        LocalDate joiningDate = LocalDate.now().minusYears(3);
-//
-//        // Act
-//        User user = new User(userId, userName, userType, joiningDate);
-//
-//        // Assert
-//        assertNotNull(user);
-//        assertEquals(userId, user.getUserId());
-//        assertEquals(userName, user.getUserName());
-//        assertEquals(userType, user.getUserType());
-//        assertEquals(joiningDate, user.getJoiningDate());
-//    }
-//
-//    @Test
-//    void testUserConstructorWithNullUserId() {
-//        // Arrange
-//        String userName = "John Doe";
-//        UserType userType = UserType.EMPLOYEE;
-//        LocalDate joiningDate = LocalDate.now().minusYears(3);
-//
-//        // Act
-//        User user = new User(null, userName, userType, joiningDate);
-//
-//        // Assert
-//        Set<ConstraintViolation<User>> violations = validator.validate(user);
-//        assertFalse(violations.isEmpty());
-//        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("UserId Cannot be Empty")));
-//    }
-//
-//    @Test
-//    void testUserConstructorWithEmptyUserId() {
-//        // Arrange
-//        String userId = "";
-//        String userName = "John Doe";
-//        UserType userType = UserType.EMPLOYEE;
-//        LocalDate joiningDate = LocalDate.now().minusYears(3);
-//
-//        // Act
-//        User user = new User(userId, userName, userType, joiningDate);
-//
-//        // Assert
-//        Set<ConstraintViolation<User>> violations = validator.validate(user);
-//        assertFalse(violations.isEmpty());
-//        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("UserId Cannot be Empty")));
-//    }
-//
-//    @Test
-//    void testUserConstructorWithNullUserName() {
-//        // Arrange
-//        String userId = "user1";
-//        UserType userType = UserType.EMPLOYEE;
-//        LocalDate joiningDate = LocalDate.now().minusYears(3);
-//
-//        // Act
-//        User user = new User(userId, null, userType, joiningDate);
-//
-//        // Assert
-//        Set<ConstraintViolation<User>> violations = validator.validate(user);
-//        assertFalse(violations.isEmpty());
-//        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("UserName Cannot be Empty")));
-//    }
-//
-//    @Test
-//    void testUserConstructorWithEmptyUserName() {
-//        // Arrange
-//        String userId = "user1";
-//        String userName = "";
-//        UserType userType = UserType.EMPLOYEE;
-//        LocalDate joiningDate = LocalDate.now().minusYears(3);
-//
-//        // Act
-//        User user = new User(userId, userName, userType, joiningDate);
-//
-//        // Assert
-//        Set<ConstraintViolation<User>> violations = validator.validate(user);
-//        assertFalse(violations.isEmpty());
-//        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("UserName Cannot be Empty")));
-//    }
-//
-//    @Test
-//    void testUserConstructorWithNullUserType() {
-//        // Arrange
-//        String userId = "user1";
-//        String userName = "John Doe";
-//        LocalDate joiningDate = LocalDate.now().minusYears(3);
-//
-//        // Act
-//        User user = new User(userId, userName, null, joiningDate);
-//
-//        // Assert
-//        Set<ConstraintViolation<User>> violations = validator.validate(user);
-//        assertFalse(violations.isEmpty());
-//        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("UserType Cannot be Blank")));
-//    }
-//
-//    @Test
-//    void testUserConstructorWithNullJoiningDate() {
-//        // Arrange
-//        String userId = "user1";
-//        String userName = "John Doe";
-//        UserType userType = UserType.EMPLOYEE;
-//
-//        // Act
-//        User user = new User(userId, userName, userType, null);
-//
-//        // Assert
-//        Set<ConstraintViolation<User>> violations = validator.validate(user);
-//        assertFalse(violations.isEmpty());
-//        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("JoiningDate Cannot be Blank")));
-//    }
-//}
-//
+package com.retailstore.model;
+import com.retailstore.enums.ItemType;
+import com.retailstore.enums.UserType;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class UserTest {
+
+    private Validator validator;
+
+    @BeforeEach
+    public void setUp() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
+
+    @Test
+    public void testUserValidation_Success() {
+        String userId = "user123";
+        String userName = "John Doe";
+        UserType userType = UserType.EMPLOYEE;
+        LocalDate joiningDate = LocalDate.now();
+
+        User user = new User(userId, userName, userType, joiningDate);
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertTrue(violations.isEmpty(), "There should be no violations");
+        assertNotNull(user);
+        assertEquals(userId, user.getUserId());
+        assertEquals(userName, user.getUserName());
+        assertEquals(userType, user.getUserType());
+        assertEquals(joiningDate, user.getJoiningDate());
+    }
+
+    @Test
+    public void testUserValidation_UserIdBlank() {
+        User user = new User("", "John Doe", UserType.EMPLOYEE, LocalDate.now());
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertFalse(violations.isEmpty(), "There should be violations");
+        assertEquals(1, violations.size());
+        assertEquals("UserId Cannot be Empty", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    public void testUserValidation_UserNameBlank() {
+        User user = new User("user123", "", UserType.EMPLOYEE, LocalDate.now());
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertFalse(violations.isEmpty(), "There should be violations");
+        assertEquals(1, violations.size());
+        assertEquals("UserName Cannot be Empty", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    public void testUserValidation_UserTypeNull() {
+        User user = new User("user123", "John Doe", null, LocalDate.now());
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertFalse(violations.isEmpty(), "There should be violations");
+        assertEquals(1, violations.size());
+        assertEquals("UserType Cannot be Blank", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    public void testUserValidation_JoiningDateNull() {
+        User user = new User("user123", "John Doe", UserType.EMPLOYEE, null);
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertFalse(violations.isEmpty(), "There should be violations");
+        assertEquals(1, violations.size());
+        assertEquals("JoiningDate cannot be Blank", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    public void testUserValidation_JoiningDateFuture() {
+        User user = new User("user123", "John Doe", UserType.EMPLOYEE, LocalDate.now().plusDays(1));
+
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+
+        assertFalse(violations.isEmpty(), "There should be violations");
+        assertEquals(1, violations.size());
+        assertEquals("The date must be in the past or present", violations.iterator().next().getMessage());
+    }
+}
