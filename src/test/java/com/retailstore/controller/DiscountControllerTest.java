@@ -36,7 +36,6 @@ class DiscountControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-
     @Test
     void testCalculateNetPayableAmount() {
 
@@ -45,27 +44,26 @@ class DiscountControllerTest {
         when(user.getJoiningDate()).thenReturn(LocalDate.now());
 
         Item item1 = mock(Item.class);
-        when(item1.getTotalPrice()).thenReturn(BigDecimal.valueOf(4.0));
+        when(item1.getTotalPrice()).thenReturn(BigDecimal.valueOf(100.0));
         when(item1.getType()).thenReturn(ItemType.GROCERIES);
 
         Item item2 = mock(Item.class);
-        when(item2.getTotalPrice()).thenReturn(BigDecimal.valueOf(1200.0));
+        when(item2.getTotalPrice()).thenReturn(BigDecimal.valueOf(200.0));
         when(item2.getType()).thenReturn(ItemType.NON_GROCERIES);
 
         Bill bill = mock(Bill.class);
         when(bill.getUser()).thenReturn(user);
         when(bill.getItems()).thenReturn(Arrays.asList(item1, item2));
 
-        Discount discount = mock(Discount.class);
-        // Configure mock behavior
+        Discount discount = new Discount("300.00","225.00");
         when(discountService.calculateNetPayableAmount(bill)).thenReturn(discount);
 
-        // Call the method under test
         ResponseEntity<Discount> response = discountController.calculateNetPayableAmount(bill);
 
         // Verify the results
-        assertEquals(discount, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(discount.getTotalAmount(), response.getBody().getTotalAmount());
+        assertEquals(discount.getDiscountedAmount(), response.getBody().getDiscountedAmount());
         verify(discountService, times(1)).calculateNetPayableAmount(bill);
     }
 }
