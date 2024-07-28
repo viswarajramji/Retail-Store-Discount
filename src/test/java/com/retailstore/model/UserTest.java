@@ -1,5 +1,4 @@
 package com.retailstore.model;
-import com.retailstore.enums.ItemType;
 import com.retailstore.enums.UserType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -7,26 +6,23 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserTest {
+class UserTest {
 
     private Validator validator;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
 
     @Test
-    public void testUserValidation_Success() {
+    void testUserValidation_Success() {
         String userId = "user123";
         String userName = "John Doe";
         UserType userType = UserType.EMPLOYEE;
@@ -45,7 +41,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUserValidation_UserIdBlank() {
+     void testUserValidation_UserIdBlank() {
         User user = new User("", "John Doe", UserType.EMPLOYEE, LocalDate.now());
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -56,7 +52,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUserValidation_UserNameBlank() {
+     void testUserValidation_UserNameBlank() {
         User user = new User("user123", "", UserType.EMPLOYEE, LocalDate.now());
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -67,7 +63,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUserValidation_UserTypeNull() {
+     void testUserValidation_UserTypeNull() {
         User user = new User("user123", "John Doe", null, LocalDate.now());
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -78,7 +74,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUserValidation_JoiningDateNull() {
+     void testUserValidation_JoiningDateNull() {
         User user = new User("user123", "John Doe", UserType.EMPLOYEE, null);
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -89,7 +85,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUserValidation_JoiningDateFuture() {
+     void testUserValidation_JoiningDateFuture() {
         User user = new User("user123", "John Doe", UserType.EMPLOYEE, LocalDate.now().plusDays(1));
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);

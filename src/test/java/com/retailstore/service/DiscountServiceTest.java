@@ -8,25 +8,22 @@ import com.retailstore.model.Item;
 import com.retailstore.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-@SpringBootTest
-public class DiscountServiceTest {
+class DiscountServiceTest {
 
     private DiscountService discountService;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         discountService = new DiscountService();
     }
 
     @Test
-    public void testCalculateNetPayableAmount_newEmployeeWithNonGroceryItems() {
+     void testCalculateNetPayableAmount_newEmployeeWithNonGroceryItems() {
         User user = new User("1", "John Doe", UserType.EMPLOYEE, LocalDate.now().minusYears(1));
         List<Item> items = Arrays.asList(
                 new Item("1", "Laptop", 1, ItemType.NON_GROCERIES, new BigDecimal("1000.00")),
@@ -41,7 +38,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_newAffiliateWithNonGroceryItems() {
+     void testCalculateNetPayableAmount_newAffiliateWithNonGroceryItems() {
         User user = new User("2", "Jane Smith", UserType.AFFILIATE, LocalDate.now().minusYears(1));
         List<Item> items = Arrays.asList(
                 new Item("3", "Groceries", 10, ItemType.NON_GROCERIES, new BigDecimal("1000.00")),
@@ -56,7 +53,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_longTermCustomerWithNonGroceryItems() {
+     void testCalculateNetPayableAmount_longTermCustomerWithNonGroceryItems() {
         User user = new User("3", "Alice Johnson", UserType.CUSTOMER, LocalDate.now().minusYears(5));
         List<Item> items = Arrays.asList(
                 new Item("5", "Washing Machine", 1, ItemType.NON_GROCERIES, new BigDecimal("1000.00")),
@@ -70,10 +67,8 @@ public class DiscountServiceTest {
         assertEquals("1350.00", discount.getDiscountedAmount());
     }
 
-    //with grocries:
-
     @Test
-    public void testCalculateNetPayableAmount_longEmployeeWithGroceryItems() {
+     void testCalculateNetPayableAmount_longEmployeeWithGroceryItems() {
         User user = new User("1", "John Doe", UserType.EMPLOYEE, LocalDate.now().minusYears(3));
         List<Item> items = Arrays.asList(
                 new Item("1", "Laptop", 1, ItemType.GROCERIES, new BigDecimal("1000.00")),
@@ -88,7 +83,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_longAffiliateWithGroceryItems() {
+     void testCalculateNetPayableAmount_longAffiliateWithGroceryItems() {
         User user = new User("2", "Jane Smith", UserType.AFFILIATE, LocalDate.now().minusYears(1));
         List<Item> items = Arrays.asList(
                 new Item("3", "Groceries", 10, ItemType.GROCERIES, new BigDecimal("1000.00")),
@@ -101,9 +96,9 @@ public class DiscountServiceTest {
         assertEquals("1500.00", discount.getTotalAmount());
         assertEquals("1425.00", discount.getDiscountedAmount());
     }
-//
+
     @Test
-    public void testCalculateNetPayableAmount_longTermCustomerWithGroceryItems() {
+     void testCalculateNetPayableAmount_longTermCustomerWithGroceryItems() {
         User user = new User("3", "Alice Johnson", UserType.CUSTOMER, LocalDate.now().minusYears(5));
         List<Item> items = Arrays.asList(
                 new Item("5", "Washing Machine", 1, ItemType.GROCERIES, new BigDecimal("1000.00")),
@@ -117,11 +112,8 @@ public class DiscountServiceTest {
         assertEquals("1425.00", discount.getDiscountedAmount());
     }
 
-
-    //with groceries mix items:
-
     @Test
-    public void testCalculateNetPayableAmount_longEmployeeWithMixGroceryItems() {
+     void testCalculateNetPayableAmount_longEmployeeWithMixGroceryItems() {
         User user = new User("1", "John Doe", UserType.EMPLOYEE, LocalDate.now().minusYears(3));
         List<Item> items = Arrays.asList(
                 new Item("1", "Laptop", 1, ItemType.NON_GROCERIES, new BigDecimal("1000.00")),
@@ -136,7 +128,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_longAffiliateWithMixGroceryItems() {
+     void testCalculateNetPayableAmount_longAffiliateWithMixGroceryItems() {
         User user = new User("2", "Jane Smith", UserType.AFFILIATE, LocalDate.now().minusYears(2));
         List<Item> items = Arrays.asList(
                 new Item("3", "Groceries", 10, ItemType.NON_GROCERIES, new BigDecimal("1000.00")),
@@ -149,9 +141,9 @@ public class DiscountServiceTest {
         assertEquals("1500.00", discount.getTotalAmount());
         assertEquals("1325.00", discount.getDiscountedAmount());
     }
-    //
+
     @Test
-    public void testCalculateNetPayableAmount_longTermCustomerWithMixGroceryItems() {
+     void testCalculateNetPayableAmount_longTermCustomerWithMixGroceryItems() {
         User user = new User("3", "Alice Johnson", UserType.CUSTOMER, LocalDate.now().minusYears(5));
         List<Item> items = Arrays.asList(
                 new Item("5", "Washing Machine", 1, ItemType.NON_GROCERIES, new BigDecimal("1000.00")),
@@ -166,10 +158,8 @@ public class DiscountServiceTest {
     }
 
 
-    //with mix items
-
-    @Test
-    public void testCalculateNetPayableAmount_newEmployeeCustomerWithGroceryItems() {
+     @Test
+     void testCalculateNetPayableAmount_newEmployeeCustomerWithGroceryItems() {
         User user = new User("4", "Bob Brown", UserType.EMPLOYEE, LocalDate.now().minusMonths(6));
         List<Item> items = Arrays.asList(
                 new Item("7", "Bread", 5, ItemType.GROCERIES, new BigDecimal("1000.00")),
@@ -184,7 +174,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_newAffiliateWithGroceryItems() {
+     void testCalculateNetPayableAmount_newAffiliateWithGroceryItems() {
         User user = new User("5", "Charlie Davis", UserType.AFFILIATE, LocalDate.now().minusMonths(3));
         List<Item> items = Arrays.asList(
                 new Item("9", "Groceries", 10, ItemType.GROCERIES, new BigDecimal("1000.00")),
@@ -199,7 +189,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_noDiscounts() {
+     void testCalculateNetPayableAmount_noDiscounts() {
         User user = new User("6", "Dave Evans", UserType.CUSTOMER, LocalDate.now());
         List<Item> items = Arrays.asList(
                 new Item("11", "Book", 1, ItemType.NON_GROCERIES, new BigDecimal("50.00"))
@@ -213,10 +203,10 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_noDiscountsWithMaxDecimal() {
-        User user = new User("6", "Dave Evans", UserType.CUSTOMER, LocalDate.now());
+     void testCalculateNetPayableAmount_noDiscountsWithMaxDecimal() {
+        User user = new User("12", "Dave Evans", UserType.CUSTOMER, LocalDate.now());
         List<Item> items = Arrays.asList(
-                new Item("11", "Book", 1, ItemType.NON_GROCERIES, new BigDecimal("99.992345"))
+                new Item("15", "Milk", 1, ItemType.GROCERIES, new BigDecimal("99.992345"))
         );
         Bill bill = new Bill("6", user, items);
 
@@ -227,12 +217,12 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_bulkDiscountsWithMaxDecimal() {
-        User user = new User("6", "Dave Evans", UserType.CUSTOMER, LocalDate.now());
+     void testCalculateNetPayableAmount_bulkDiscountsWithMaxDecimal() {
+        User user = new User("14", "Dave Shan", UserType.CUSTOMER, LocalDate.now());
         List<Item> items = Arrays.asList(
-                new Item("11", "Book", 1, ItemType.NON_GROCERIES, new BigDecimal("199.995"))
+                new Item("18", "Phone", 1, ItemType.NON_GROCERIES, new BigDecimal("199.995"))
         );
-        Bill bill = new Bill("6", user, items);
+        Bill bill = new Bill("25", user, items);
 
         Discount discount = discountService.calculateNetPayableAmount(bill);
 
@@ -241,17 +231,33 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void testCalculateNetPayableAmount_bulkDiscountsWithMinDecimal() {
-        User user = new User("6", "Dave Evans", UserType.CUSTOMER, LocalDate.now());
+     void testCalculateNetPayableAmount_bulkDiscountsWithMinDecimal() {
+        User user = new User("28", "Mike Evans", UserType.CUSTOMER, LocalDate.now());
         List<Item> items = Arrays.asList(
-                new Item("11", "Book", 1, ItemType.NON_GROCERIES, new BigDecimal("199.994"))
+                new Item("100", "Vegetable", 1, ItemType.GROCERIES, new BigDecimal("199.994"))
         );
-        Bill bill = new Bill("6", user, items);
+        Bill bill = new Bill("78", user, items);
 
         Discount discount = discountService.calculateNetPayableAmount(bill);
 
         assertEquals("199.99", discount.getTotalAmount());
         assertEquals("194.99", discount.getDiscountedAmount());
+    }
+
+
+    @Test
+    void testCalculateNetPayableAmount_bulkDiscountsAndEmployeeDiscountWithMinDecimal() {
+        User user = new User("28", "Mike Evans", UserType.EMPLOYEE, LocalDate.now());
+        List<Item> items = Arrays.asList(
+                new Item("102", "Vegetable", 1, ItemType.GROCERIES, new BigDecimal("48.99345")),
+                new Item("104", "Water Bottle", 1, ItemType.NON_GROCERIES, new BigDecimal("48.99345")));
+
+        Bill bill = new Bill("106", user, items);
+
+        Discount discount = discountService.calculateNetPayableAmount(bill);
+
+        assertEquals("97.99", discount.getTotalAmount());
+        assertEquals("83.29", discount.getDiscountedAmount());
     }
 
 }
