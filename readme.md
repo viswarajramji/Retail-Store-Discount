@@ -68,7 +68,7 @@ The following diagram represents the high-level structure of the classes used in
 ### Clone the Repository
 
 ```sh
-git clone https://github.com/yourusername/retail-store-discount.git
+git clone https://github.com/viswarajramji/Retail-Store-Discount.git
 ```
 
 ```sh
